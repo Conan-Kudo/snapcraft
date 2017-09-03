@@ -1,6 +1,7 @@
 # -*- Mode:Python; indent-tabs-mode:nil; tab-width:4 -*-
 #
 # Copyright (C) 2017 Canonical Ltd
+# Copyright (C) 2017 Neal Gompa
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 3 as
@@ -28,11 +29,26 @@ _DEB_BASED_PLATFORM = [
     'neon',
 ]
 
+_RPM_BASED_PLATFORM = [
+    'centos',
+    'fedora',
+    'mageia',
+    'opensuse',
+    'rhel',
+    'suse',
+]
+
 
 def _is_deb_based(distro=None):
     if not distro:
         distro = OsRelease().id()
     return distro in _DEB_BASED_PLATFORM
+
+
+def _is_rpm_based(distro=None):
+    if not distro:
+        distro = get_os_release_info()['ID']
+    return distro in _RPM_BASED_PLATFORM
 
 
 def _get_repo_for_platform():
