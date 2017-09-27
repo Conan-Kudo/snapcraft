@@ -43,9 +43,11 @@ from xml.etree import ElementTree
 import snapcraft
 from snapcraft import file_utils
 from snapcraft.internal import cache, repo, common
+from snapcraft.internal.errors import SnapcraftEnvironmentError
 from snapcraft.internal.indicators import is_dumb_terminal
 from ._base import BaseRepo
 from . import errors
+from snapcraft.internal.common import get_os_release_info
 
 
 logger = logging.getLogger(__name__)
@@ -168,3 +170,66 @@ skip_if_unavailable=0
 _library_list = dict()
 
 
+class RPM(BaseRepo):
+
+    @classmethod
+    def get_package_libraries(cls, package_name):
+        raise SnapcraftEnvironmentError('dpkg -L {} | grep lib'.format(package_name))
+
+
+    @classmethod
+    def install_build_packages(cls, package_names):
+        raise SnapcraftEnvironmentError("I ain't got no clue what to do with {}".format(package_names))
+
+    @classmethod
+    def get_packages_for_source_type(cls, source_type):
+        if source_type == 'bzr':
+            packages = {'bzr'}
+        elif source_type == 'git':
+            packages = {'git'}
+        elif source_type == 'tar':
+            packages = {'tar'}
+        elif source_type == 'hg' or source_type == 'mercurial':
+            packages = {'mercurial'}
+        elif source_type == 'subversion' or source_type == 'svn':
+            packages = {'subversion'}
+        else:
+            packages = set()
+        raise SnapcraftEnvironmentError('Which package for {}?'.format(source_type))
+        return packages
+
+    @classmethod
+    def install_build_packages(cls, package_names):
+        # install packages
+        # return installed packages in the form [foo=version]
+        raise SnapcraftEnvironmentError('How ever would I install {}?'.format(package_names))
+
+    @classmethod
+    def build_package_is_valid(cls, package_name):
+        raise SnapcraftEnvironmentError('return True if {} in cache'.format(package_names))
+
+    @classmethod
+    def is_package_installed(cls, package_name):
+        raise SnapcraftEnvironmentError('return True if {} installed'.format(package_names))
+
+    @classmethod
+    def get_installed_packages(cls):
+        raise SnapcraftEnvironmentError('return list of the form [foo=version]')
+
+    def __init__(self, rootdir, sources=None, project_options=None):
+        super().__init__(rootdir)
+        self._downloaddir = os.path.join(rootdir, 'download')
+
+        if not project_options:
+            project_options = snapcraft.ProjectOptions()
+
+    def is_valid(self, package_name):
+        raise SnapcraftEnvironmentError('RPM.is_valid')
+
+    def get(self, package_names):
+        raise SnapcraftEnvironmentError('RPM.get')
+
+    def unpack(self, unpackdir):
+        raise SnapcraftEnvironmentError('RPM.unpack')
+
+    # distro = get_os_release_info()['ID']

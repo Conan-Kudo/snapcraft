@@ -56,6 +56,9 @@ def _get_repo_for_platform():
     if _is_deb_based(distro):
         from ._deb import Ubuntu
         return Ubuntu
+    elif _is_rpm_based(distro):
+        from ._rpm import RPM
+        return RPM
     else:
         from ._base import DummyRepo
         return DummyRepo
