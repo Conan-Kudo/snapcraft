@@ -122,7 +122,7 @@ skip_if_unavailable=0
 _DEFAULT_REPOS_MAGEIA = \
     '''[mageia]
 name=mageia
-mirrorlist=https://www.mageia.org/mirrorlist/?release=$releasever&arch=${distarch}&section=core&repo=release
+mirrorlist=https://www.mageia.org/mirrorlist/?release=$releasever&arch={distarch}&section=core&repo=release
 fastestmirror=1
 failovermethod=priority
 gpgkey=file:///usr/share/distribution-gpg-keys/mageia/RPM-GPG-KEY-Mageia
@@ -131,7 +131,7 @@ skip_if_unavailable=0
 
 [updates]
 name=updates
-mirrorlist=https://www.mageia.org/mirrorlist/?release=$releasever&arch=${distarch}&section=core&repo=updates
+mirrorlist=https://www.mageia.org/mirrorlist/?release=$releasever&arch={distarch}&section=core&repo=updates
 fastestmirror=1
 failovermethod=priority
 gpgkey=file:///usr/share/distribution-gpg-keys/mageia/RPM-GPG-KEY-Mageia
