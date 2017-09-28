@@ -167,8 +167,9 @@ class RPM(BaseRepo):
     @classmethod
     def get_package_libraries(cls, package_name):
         global _library_list
-        output = subprocess.check_output(['rpm', '--query' '--list',
-                                          package_name]).decode(
+        if package_name not in _library_list:
+            output = subprocess.check_output(
+                ['rpm', '--query' '--list', package_name]).decode(
                     sys.getfilesystemencoding()).strip().split()
         _library_list[package_name] = {i for i in output if 'lib' in i}
 
