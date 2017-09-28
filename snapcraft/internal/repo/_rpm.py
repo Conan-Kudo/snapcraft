@@ -28,17 +28,9 @@ import urllib
 import urllib.request
 
 import dnf
+import dnf.conf
 import dnf.rpm
 import rpm
-
-import hawkey
-
-# for CLI output
-from dnf.cli.progress import MultiFileProgressMeter as DownloadProgress
-from dnf.cli.output import CliTransactionDisplay as TransactionProgress
-
-
-from xml.etree import ElementTree
 
 import snapcraft
 from snapcraft import file_utils
@@ -174,8 +166,13 @@ class RPM(BaseRepo):
 
     @classmethod
     def get_package_libraries(cls, package_name):
-        raise SnapcraftEnvironmentError('dpkg -L {} | grep lib'.format(package_name))
+        global _library_list
+        output = subprocess.check_output(['rpm', '--query' '--list',
+                                          package_name]).decode(
+                    sys.getfilesystemencoding()).strip().split()
+        _library_list[package_name] = {i for i in output if 'lib' in i}
 
+        return _library_list[package_name].copy()
 
     @classmethod
     def install_build_packages(cls, package_names):
