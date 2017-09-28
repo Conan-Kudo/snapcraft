@@ -192,7 +192,7 @@ class RPM(BaseRepo):
             packages = {'subversion'}
         else:
             packages = set()
-        raise SnapcraftEnvironmentError('Which package for {}?'.format(source_type))
+
         return packages
 
     @classmethod
