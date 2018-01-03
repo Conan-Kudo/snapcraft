@@ -50,7 +50,7 @@ _MAIN_YUM_CONFIG = \
 keepcache=1
 debuglevel=2
 reposdir=/dev/null
-logdir=/var/log/snapcraft/dnf
+logdir=/var/tmp/snapcraft/log/dnf
 retries=20
 obsoletes=1
 gpgcheck=1
@@ -58,7 +58,7 @@ assumeyes=1
 install_weak_deps=0
 tsflags=nodocs
 metadata_expire=0
-cachedir=/var/cache/snapcraft/dnf
+cachedir=/var/tmp/snapcraft/cache/dnf
 
 '''
 
@@ -159,6 +159,8 @@ repo_gpgcheck=1
 skip_if_unavailable=0
 '''
 
+_dnf_config_file = None
+
 _library_list = dict()
 
 
@@ -166,6 +168,7 @@ class RPM(BaseRepo):
 
     @classmethod
     def get_package_libraries(cls, package_name):
+        # TODO: Convert to using RPM's Python API
         global _library_list
         if package_name not in _library_list:
             output = subprocess.check_output(
